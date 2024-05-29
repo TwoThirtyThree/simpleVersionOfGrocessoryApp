@@ -64,10 +64,11 @@ android {
 
 
 dependencies {
-    implementation ("com.googlecode.libphonenumber:libphonenumber:8.12.48")
+    implementation("com.googlecode.libphonenumber:libphonenumber:8.13.37")
+
     testImplementation ("junit:junit:4.13.2")
     testImplementation ("org.mockito:mockito-core:3.9.0")
-    testImplementation ("com.google.i18n.phonenumbers:libphonenumber:8.12.36")
+
     // Kotlin dependencies for test source set
     testImplementation ("org.jetbrains.kotlin:kotlin-stdlib")
 
