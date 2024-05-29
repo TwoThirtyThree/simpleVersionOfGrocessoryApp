@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="500dp"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_marginStart="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginBottom="16dp"
+        android:background="@drawable/borders"
+        android:elevation="4dp"
+        app:cardCornerRadius="10dp"
+        android:foreground="?android:attr/selectableItemBackground"
+        android:padding="16dp">
+        <TextView
+            android:gravity="center"
+            android:textStyle="bold"
+            android:fontFamily="sans-serif"
+            android:textSize="18sp"
+            android:layout_marginTop="20dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="lets get started"
+            >
+
+        </TextView>
+        <TextView
+            android:layout_marginTop="70dp"
+            android:layout_marginStart="5dp"
+            android:textStyle="bold"
+            android:fontFamily="sans-serif"
+            android:textSize="18sp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Choose country and code and enters yours phone number"
+            >
+
+
+        </TextView>
+
+        <RelativeLayout
+            android:layout_marginTop="180dp"
+            android:id="@+id/relativeLayout"
+            android:layout_width="match_parent"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:background="@drawable/borders"
+            android:layout_height="60dp"
+            android:layout_centerVertical="true"
+            android:gravity="center">
+
+
+            <EditText
+                android:id="@+id/edittext_country_code"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginTop="0dp"
+                android:text="+92|"
+                android:textColor="@android:color/black"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+
+            <EditText
+                android:layout_marginTop="0dp"
+                android:id="@+id/edittext_phone_number"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="8dp"
+                android:layout_toEndOf="@id/edittext_country_code"
+                android:background="@android:color/transparent"
+                android:hint="Enter Country Number"
+                android:inputType="phone" />
+
+        </RelativeLayout>
+
+
+        <Button
+            android:id="@+id/button_get_otp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:layout_below="@id/relativeLayout"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:gravity="center"
+            android:layout_marginBottom="10dp"
+            android:layout_marginTop="340dp"
+            android:text="Submit" />
+
+    </androidx.cardview.widget.CardView>
+
+</RelativeLayout>
