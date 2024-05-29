@@ -1,0 +1,68 @@
+{
+   "banners":[
+      {
+         "id":"111",
+         "imageUrl":"https://storage.googleapis.com/noknok-apps/market-banners/-6600ed9648529568aa3fb7f9.png?v=1711336854971"
+      },
+      {
+         "id":"222",
+         "imageUrl":"https://storage.googleapis.com/noknok-apps/market-banners/-6603b4184c791315f13cbe8b.png?v=1711518744228"
+      },
+      {
+         "id":"201",
+         "imageUrl":"https://storage.googleapis.com/noknok-apps/market-banners/-6627afc31830b367a873fe2b.png?v=1713876931443"
+      },
+      {
+         "id":"302",
+         "imageUrl":"https://storage.googleapis.com/eddress/market-banners/-65f7c3df518d821d413ca2a3.png?v=1710736351609"
+      }
+
+   ],
+   "products":[
+      {
+         "id":"112",
+         "label":"Nescafe 2in1 Stick - 11.7g",
+         "description":"11.7g",
+         "imageUrl":"https://storage.googleapis.com/eddress/market-products/merchants/jHn1l1rmHanY3l/5d1b28e3bcfeb67540d17541.png?v=3",
+         "outOfStock":false,
+         "price":425.0,
+         "weight":1.0,
+         "quantity":10,
+         "discount":3
+      },
+      {
+         "id":"113",
+         "label":"Ariel Power Gel Liquid Detergent - 3L",
+         "description":"",
+         "imageUrl":"https://storage.googleapis.com/eddress/market-products/merchants/jHn1l1rmHanY3l/5d00ee1fbcfeb675402a471f.png?v=9",
+         "weight":1.0,
+         "outOfStock":false,
+         "price":39990.0,
+         "quantity":0,
+         "discount":5
+      },
+      {
+         "id":"114",
+         "label":"Nescafe Gold Unsweetened Cappuccino Stick - 14.2g",
+         "description":"",
+         "imageUrl":"https://storage.googleapis.com/eddress/market-products/merchants/jHn1l1rmHanY3l/5d1b28e3bcfeb67540d17543.png?v=2",
+         "weight":1.0,
+         "outOfStock":false,
+         "price":1290.0,
+         "quantity":20,
+         "discount":5
+      },
+      {
+         "id":"115",
+         "label":"Der General Spring Mountain Detergent - 1.5L",
+         "description":"",
+         "imageUrl":"https://storage.googleapis.com/eddress/market-products/merchants/jHn1l1rmHanY3l/5e46a204acb65451c0425902.png?v=7",
+         "weight":1.0,
+         "outOfStock":false,
+         "price":9290.0,
+         "quantity":25,
+         "discount":0
+
+      }
+   ]
+}
