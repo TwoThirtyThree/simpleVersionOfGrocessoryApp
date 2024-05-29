@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:gravity="center"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.login.VerifyOtpCodeActivity">
+    <androidx.cardview.widget.CardView
+
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_marginStart="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginBottom="16dp"
+        android:background="@drawable/borders"
+        android:elevation="4dp"
+        app:cardCornerRadius="10dp"
+
+        android:foreground="?android:attr/selectableItemBackground"
+        android:padding="16dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <TextView
+                android:gravity="center"
+                android:textStyle="bold"
+                android:fontFamily="sans-serif"
+                android:textSize="18sp"
+                android:layout_marginTop="20dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Verify OTP"
+                >
+
+            </TextView>
+
+            <EditText
+                android:id="@+id/edittext_otp_verify"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+
+                android:layout_gravity="center"
+                android:layout_alignParentStart="true"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="10dp"
+               android:textAlignment="center"
+                android:layout_marginEnd="10dp"
+                android:layout_marginTop="50dp"
+                android:background="@drawable/borders"
+                android:hint="Enter OTP"
+                android:inputType="phone" />
+
+
+
+
+            <!-- Submit Button -->
+
+            <Button
+                android:id="@+id/button_otp_login"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
+                android:layout_below="@id/relativeLayout"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:gravity="center"
+                android:layout_marginBottom="10dp"
+                android:layout_marginTop="40dp"
+                android:text="verify" />
+        </LinearLayout>
+
+
+    </androidx.cardview.widget.CardView>
+</LinearLayout>
