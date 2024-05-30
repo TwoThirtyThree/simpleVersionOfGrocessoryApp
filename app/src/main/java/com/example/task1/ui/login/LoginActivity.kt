@@ -9,6 +9,7 @@ import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.task1.R
+import com.example.task1.util.PhoneAuthProviderWrapper
 import com.google.firebase.FirebaseException
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.PhoneAuthCredential
@@ -26,14 +27,16 @@ class LoginActivity : AppCompatActivity() {
     private var verificationId: String? = null
     private lateinit var editTextPhoneNumber: EditText
     private lateinit var editTextCountryCode: EditText
-
     private lateinit var otpButton: Button
+    lateinit var phoneAuthProviderWrapper: PhoneAuthProviderWrapper
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
+
         initViews()
         otpClickListener()
+        phoneAuthProviderWrapper = PhoneAuthProviderWrapper() // Initialize the wrapper
     }
 
     private fun initViews() {
@@ -83,7 +86,7 @@ class LoginActivity : AppCompatActivity() {
 
 
 
-    private fun sendVerificationCode(number: String) {
+    fun sendVerificationCode(number: String) {
         firebaseAuth?.let {
             val options = PhoneAuthOptions.newBuilder(it)
                 .setPhoneNumber(number)
@@ -92,6 +95,7 @@ class LoginActivity : AppCompatActivity() {
                 .setCallbacks(mCallBack)
                 .build()
             PhoneAuthProvider.verifyPhoneNumber(options)
+            phoneAuthProviderWrapper.verifyPhoneNumber(options) // Use the wrapper
         }
     }
 
@@ -111,4 +115,7 @@ class LoginActivity : AppCompatActivity() {
 
             }
         }
+
 }
+
+

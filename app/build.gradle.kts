@@ -1,3 +1,6 @@
+import com.android.build.api.variant.AndroidResources
+import org.jetbrains.kotlin.android.synthetic.res.AndroidResource
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin.android)
@@ -59,12 +62,17 @@ android {
             }
         }
     }
-
+    testOptions {
+       unitTests.isReturnDefaultValues = true
+       unitTests.isIncludeAndroidResources = true
+    }
 }
 
 
 dependencies {
     implementation("com.googlecode.libphonenumber:libphonenumber:8.13.37")
+    implementation(libs.core.ktx)
+    implementation(libs.androidx.junit.ktx)
 
     testImplementation ("junit:junit:4.13.2")
     testImplementation ("org.mockito:mockito-core:3.9.0")
@@ -72,6 +80,10 @@ dependencies {
     // Kotlin dependencies for test source set
     testImplementation ("org.jetbrains.kotlin:kotlin-stdlib")
 
+    testImplementation ("org.mockito:mockito-inline:4.9.0") // Example version, replace with the latest
+    testImplementation ("org.robolectric:robolectric:4.9")
+
+    testImplementation("org.mockito.kotlin:mockito-kotlin:4.0.0")
     androidTestImplementation("org.junit.jupiter:junit-jupiter:5.8.1")
     implementation("com.google.firebase:firebase-bom:33.0.0")
     implementation ("androidx.browser:browser:1.3.0")
@@ -81,8 +93,8 @@ dependencies {
     implementation ("androidx.lifecycle:lifecycle-livedata-ktx:2.4.0")
     implementation ("androidx.lifecycle:lifecycle-viewmodel-ktx:2.4.0")
     implementation("com.google.firebase:firebase-auth")
-    implementation(platform("com.google.firebase:firebase-bom:32.8.1"))
-    implementation("com.google.firebase:firebase-analytics")
+
+    implementation ("com.google.firebase:firebase-analytics:17.5.0")
     implementation ("com.squareup.picasso:picasso:2.8")
     implementation ("com.github.bumptech.glide:glide:4.12.0")
     annotationProcessor ("com.github.bumptech.glide:compiler:4.12.0")
