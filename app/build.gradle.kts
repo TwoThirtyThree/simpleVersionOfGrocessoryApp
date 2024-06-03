@@ -1,5 +1,5 @@
-import com.android.build.api.variant.AndroidResources
-import org.jetbrains.kotlin.android.synthetic.res.AndroidResource
+import org.apache.commons.io.function.Uncheck.test
+
 
 plugins {
     alias(libs.plugins.android.application)
@@ -69,7 +69,26 @@ android {
 }
 
 
+
 dependencies {
+    testImplementation ("io.mockk:mockk:1.13.11")
+    testImplementation ("org.mockito:mockito-core:4.0.0")
+//    testImplementation ("org.powermock:powermock-module-junit4:2.0.9")
+//    testImplementation ("org.powermock:powermock-api-mockito2:2.0.9")
+
+
+
+
+
+
+    testImplementation ("androidx.test:core:1.4.0")
+    testImplementation ("androidx.test.ext:junit:1.1.3")
+    testImplementation ("androidx.test.ext:truth:1.4.0")
+    testImplementation ("androidx.test:runner:1.4.0")
+    testImplementation ("androidx.test:rules:1.4.0")
+    testImplementation ("androidx.arch.core:core-testing:2.1.0")
+
+
     implementation("com.googlecode.libphonenumber:libphonenumber:8.13.37")
     implementation(libs.core.ktx)
     implementation(libs.androidx.junit.ktx)
@@ -80,7 +99,7 @@ dependencies {
     // Kotlin dependencies for test source set
     testImplementation ("org.jetbrains.kotlin:kotlin-stdlib")
 
-    testImplementation ("org.mockito:mockito-inline:4.9.0") // Example version, replace with the latest
+    testImplementation ("org.mockito:mockito-inline:4.9.0")
     testImplementation ("org.robolectric:robolectric:4.9")
 
     testImplementation("org.mockito.kotlin:mockito-kotlin:4.0.0")
@@ -99,6 +118,7 @@ dependencies {
     implementation ("com.github.bumptech.glide:glide:4.12.0")
     annotationProcessor ("com.github.bumptech.glide:compiler:4.12.0")
 
+    implementation ("androidx.browser:browser:1.2.0")
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
@@ -115,6 +135,8 @@ dependencies {
 
 
 }
+
+
 
 
 

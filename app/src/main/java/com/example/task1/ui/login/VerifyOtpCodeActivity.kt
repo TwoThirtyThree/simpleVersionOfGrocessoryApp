@@ -16,10 +16,11 @@ import com.google.firebase.auth.PhoneAuthCredential
 import com.google.firebase.auth.PhoneAuthProvider
 
 class VerifyOtpCodeActivity : AppCompatActivity() {
-    private lateinit var editTextOtp :EditText
-    private lateinit var verifyOtpButton :Button
-    private var firebaseAuth: FirebaseAuth? = null
-    private var verifiyOtp: String? = null
+    lateinit var editTextOtp: EditText
+    lateinit var verifyOtpButton: Button
+    var firebaseAuth: FirebaseAuth? = null
+    var verifiyOtp: String? = null
+    var credentialProvider: CredentialProvider = CredentialProvider() // Injected for testing
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -30,54 +31,72 @@ class VerifyOtpCodeActivity : AppCompatActivity() {
     }
 
 
-
-
-
-
     private fun initViews() {
         firebaseAuth = FirebaseAuth.getInstance()
         editTextOtp = findViewById(R.id.edittext_otp_verify)
         verifyOtpButton = findViewById(R.id.button_otp_login)
     }
-    private fun intentRecieverOtp() {
-        verifiyOtp = intent.getStringExtra("verificationId")
+
+    fun intentRecieverOtp() {
+        // verifiyOtp = intent.getStringExtra("verificationId")
+
+        verifiyOtp = intent.getStringExtra("verificationId") ?: ""
+
+
     }
-    private fun verifyCodelistener() {
+
+    fun verifyCodelistener() {
         verifyOtpButton.setOnClickListener(View.OnClickListener {
 
             if (TextUtils.isEmpty(editTextOtp.getText().toString())) {
 
-                Toast.makeText(this@VerifyOtpCodeActivity, "Please enter OTP", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this@VerifyOtpCodeActivity, "Please enter OTP", Toast.LENGTH_SHORT)
+                    .show()
             } else {
                 verifyCode(editTextOtp.getText().toString())
             }
         })
     }
-    private fun verifyCode(code: String) {
-        val credential = PhoneAuthProvider.getCredential(verifiyOtp!!, code)
-        signInWithCredential(credential)
-    }
 
-    private fun signInWithCredential(credential: PhoneAuthCredential) {
+    //    fun verifyCode(code: String) {
+//        val credential = PhoneAuthProvider.getCredential(verifiyOtp!!, code)
+//        signInWithCredential(credential)
+//    }
+    fun verifyCode(code: String) {
+        val verificationId = intent.getStringExtra("verificationId") ?: return
 
-        firebaseAuth!!.signInWithCredential(credential)
-            .addOnCompleteListener { task ->
-                if (task.isSuccessful) {
+        if (code.isNotEmpty()) {
+            val credential = credentialProvider.createPhoneAuthCredential(verificationId, code)
+            firebaseAuth?.signInWithCredential(credential)
+            verifiyOtp = verificationId
+        }
 
-                    val i = Intent(
-                        this@VerifyOtpCodeActivity,
-                        DashboardActivity::class.java
-                    )
-                    startActivity(i)
-                    finish()
-                } else {
 
-                    Toast.makeText(
-                        this@VerifyOtpCodeActivity,
-                        task.exception!!.message,
-                        Toast.LENGTH_LONG
-                    ).show()
+        fun signInWithCredential(credential: PhoneAuthCredential) {
+
+            firebaseAuth!!.signInWithCredential(credential)
+                .addOnCompleteListener { task ->
+                    if (task.isSuccessful) {
+
+                        val i = Intent(
+                            this@VerifyOtpCodeActivity,
+                            DashboardActivity::class.java
+                        )
+                        startActivity(i)
+                        finish()
+                    } else {
+
+                        Toast.makeText(
+                            this@VerifyOtpCodeActivity,
+                            task.exception!!.message,
+                            Toast.LENGTH_LONG
+                        ).show()
+                    }
                 }
-            }
+        }
+
+        fun createPhoneAuthCredential(verificationId: String, otp: String): PhoneAuthCredential {
+            return PhoneAuthProvider.getCredential(verificationId, otp)
+        }
     }
 }
