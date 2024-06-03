@@ -11,7 +11,7 @@ import java.io.IOException
 
 class RepositoryImpl(private val apiService: ApiService, private val context: Context) :
     Repository {
-    var useApiData: Boolean = false
+    override var useApiData: Boolean = false
 
     override suspend fun getBanners(): List<Banner> {
         return if (useApiData) {

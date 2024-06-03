@@ -58,19 +58,20 @@ class VerifyOtpCodeActivity : AppCompatActivity() {
         })
     }
 
-    //    fun verifyCode(code: String) {
-//        val credential = PhoneAuthProvider.getCredential(verifiyOtp!!, code)
-//        signInWithCredential(credential)
-//    }
-    fun verifyCode(code: String) {
-        val verificationId = intent.getStringExtra("verificationId") ?: return
-
-        if (code.isNotEmpty()) {
-            val credential = credentialProvider.createPhoneAuthCredential(verificationId, code)
-            firebaseAuth?.signInWithCredential(credential)
-            verifiyOtp = verificationId
-        }
-
+        fun verifyCode(code: String) {
+        val credential = PhoneAuthProvider.getCredential(verifiyOtp!!, code)
+        signInWithCredential(credential)
+    }
+//    fun verifyCode(code: String) {
+//        val verificationId = intent.getStringExtra("verificationId") ?: return
+//
+//        if (code.isNotEmpty()) {
+//            val credential = credentialProvider.createPhoneAuthCredential(verificationId, code)
+//            firebaseAuth?.signInWithCredential(credential)
+//            verifiyOtp = verificationId
+//            signInWithCredential(credential)
+//        }
+//}
 
         fun signInWithCredential(credential: PhoneAuthCredential) {
 
@@ -99,4 +100,3 @@ class VerifyOtpCodeActivity : AppCompatActivity() {
             return PhoneAuthProvider.getCredential(verificationId, otp)
         }
     }
-}
