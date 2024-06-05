@@ -15,8 +15,10 @@ import com.example.task1.data.models.Product
 import com.example.task1.ui.products.ProductDetailActivity
 
 
-class ProductAdapter(val productList: List<Product>, private val listener: OnCartClickListener) :
+class ProductAdapter(val productList: List<Product>, val listener: OnCartClickListener) :
     RecyclerView.Adapter<ProductAdapter.ProductViewHolder>() {
+
+    var totalQuantityInCart: Int = 0 // Default value is 0
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ProductViewHolder {
         val view = LayoutInflater.from(parent.context)

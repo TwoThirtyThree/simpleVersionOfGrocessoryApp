@@ -23,12 +23,12 @@ import kotlinx.coroutines.launch
 
 class DashboardActivity : AppCompatActivity(), ProductAdapter.OnCartClickListener {
     private lateinit var viewPager: ViewPager2
-    private lateinit var dashboardViewModel: DashBoardViewModel
+    lateinit var dashboardViewModel: DashBoardViewModel
     private lateinit var tabLayout: TabLayout
-    private lateinit var recyclerViewForProduct: RecyclerView
+    lateinit var recyclerViewForProduct: RecyclerView
     private lateinit var cartIcon: ImageView
-    private lateinit var cartQuantityTextView: TextView
-    private var totalQuantityInCart: Int = 0
+    lateinit var cartQuantityTextView: TextView
+   var totalQuantityInCart: Int = 0
 
 
     @SuppressLint("MissingInflatedId")
@@ -116,7 +116,7 @@ class DashboardActivity : AppCompatActivity(), ProductAdapter.OnCartClickListene
     }
 
     private fun updateCartIcon() {
-        cartQuantityTextView.text = totalQuantityInCart.toString()
+            cartQuantityTextView.text = totalQuantityInCart.toString()
         Log.d("icon", "Total quantity in cart: $totalQuantityInCart")
     }
 }
