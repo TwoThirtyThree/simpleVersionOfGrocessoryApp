@@ -61,7 +61,7 @@ class BannersTest {
 
     @Test
 
-    fun `fetchBanners should return a list of banners from API`() = testScope.runTest {
+    fun fetchBannersFromAPI() = testScope.runTest {
         // Given
         val bannerList = listOf(Banner(id = "1", imageUrl = "url1"), Banner(id = "2", imageUrl = "url2"))
         `when`(repository.getBanners()).thenReturn(bannerList)
@@ -80,7 +80,7 @@ class BannersTest {
 
     @Test
 
-    fun `fetchBanners should handle API error`() = testScope.runTest {
+    fun fetchBannersFromAPIError() = testScope.runTest {
         // Given
         `when`(repository.getBanners()).thenThrow(RuntimeException("Network Error"))
 
@@ -100,7 +100,7 @@ class BannersTest {
 
     @Test
 
-    fun `fetchBanners should return a list of banners from local assets`() = testScope.runTest {
+    fun fetchBannersFromLocalAssets() = testScope.runTest {
         // Given
         val bannerList = listOf(Banner(id = "1", imageUrl = "url1"), Banner(id = "2", imageUrl = "url2"))
         `when`(repository.getBanners()).thenReturn(bannerList)
@@ -120,7 +120,7 @@ class BannersTest {
 
     @Test
 
-    fun `fetchBanners should handle local assets error`() = testScope.runTest {
+    fun fetchBannersFromLocalAssetsError() = testScope.runTest {
         // Given
         `when`(repository.getBanners()).thenThrow(RuntimeException("Error reading local assets"))
 

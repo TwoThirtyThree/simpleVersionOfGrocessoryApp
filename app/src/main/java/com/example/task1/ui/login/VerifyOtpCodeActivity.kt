@@ -11,6 +11,7 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import com.example.task1.R
 import com.example.task1.ui.dashboard.DashboardActivity
+import com.google.firebase.auth.AuthCredential
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.PhoneAuthCredential
 import com.google.firebase.auth.PhoneAuthProvider
@@ -19,7 +20,7 @@ class VerifyOtpCodeActivity : AppCompatActivity() {
     lateinit var editTextOtp: EditText
     lateinit var verifyOtpButton: Button
     var firebaseAuth: FirebaseAuth? = null
-    var verifiyOtp: String? = null
+   var verifiyOtp: String? = null
     var credentialProvider: CredentialProvider = CredentialProvider() // Injected for testing
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -38,9 +39,9 @@ class VerifyOtpCodeActivity : AppCompatActivity() {
     }
 
     fun intentRecieverOtp() {
-        // verifiyOtp = intent.getStringExtra("verificationId")
+         verifiyOtp = intent.getStringExtra("verificationId")
 
-        verifiyOtp = intent.getStringExtra("verificationId") ?: ""
+
 
 
     }
@@ -59,21 +60,12 @@ class VerifyOtpCodeActivity : AppCompatActivity() {
     }
 
         fun verifyCode(code: String) {
-        val credential = PhoneAuthProvider.getCredential(verifiyOtp!!, code)
-        signInWithCredential(credential)
-    }
-//    fun verifyCode(code: String) {
-//        val verificationId = intent.getStringExtra("verificationId") ?: return
-//
-//        if (code.isNotEmpty()) {
-//            val credential = credentialProvider.createPhoneAuthCredential(verificationId, code)
-//            firebaseAuth?.signInWithCredential(credential)
-//            verifiyOtp = verificationId
-//            signInWithCredential(credential)
-//        }
-//}
+            val credential = PhoneAuthProvider.getCredential(verifiyOtp!!, code)
 
-        fun signInWithCredential(credential: PhoneAuthCredential) {
+            signInWithCredential(credential)
+        }
+
+        fun signInWithCredential(credential: AuthCredential) {
 
             firebaseAuth!!.signInWithCredential(credential)
                 .addOnCompleteListener { task ->

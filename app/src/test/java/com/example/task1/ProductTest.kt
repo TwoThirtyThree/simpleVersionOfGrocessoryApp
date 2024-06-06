@@ -66,7 +66,7 @@ class ProductTest {
 
     @Test
 
-    fun `fetchProducts should return a list of product from API`() = testScope.runTest {
+    fun fetchProductsFromApi()= testScope.runTest {
         // Given
         val productList = listOf(Product(id = 1, imageUrl = "url1",name = "fahad", description = "xyz", price = 56.0, quantity = 3, discount = 67))
         Mockito.`when`(repository.getProducts()).thenReturn(productList as List<Product>?)
@@ -80,12 +80,12 @@ class ProductTest {
 
         // Then
         Mockito.verify(observer).onChanged(productList)
-        Mockito.verify(repository).getBanners()
+        Mockito.verify(repository).getProducts()
     }
 
     @Test
 
-    fun `fetchProducts should handle API error`() = testScope.runTest {
+    fun fetchProductsFromAPI() = testScope.runTest {
         // Given
         Mockito.`when`(repository.getProducts()).thenThrow(RuntimeException("Network Error"))
 
@@ -105,7 +105,7 @@ class ProductTest {
 
     @Test
 
-    fun `fetchProducts should return a list of products from local assets`() = testScope.runTest {
+    fun fetchProductsFromLocalAssets() = testScope.runTest {
         // Given
         val productList = listOf(Product(id = 1, imageUrl = "url1",name = "fahad", description = "xyz", price = 56.0, quantity = 3, discount = 67))
         Mockito.`when`(repository.getProducts()).thenReturn(productList)
@@ -125,7 +125,7 @@ class ProductTest {
 
     @Test
 
-    fun `fetchProducts should handle local assets error`() = testScope.runTest {
+    fun fetchProductsFromLocalAssetsError() = testScope.runTest {
         // Given
         Mockito.`when`(repository.getProducts()).thenThrow(RuntimeException("Error reading local assets"))
 

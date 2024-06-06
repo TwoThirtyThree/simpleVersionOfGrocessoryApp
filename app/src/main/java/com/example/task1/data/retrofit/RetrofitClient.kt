@@ -8,7 +8,8 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 
 object RetrofitClient {
-    private const val BASE_URL = "http://your_api_base_url/"
+    private const val BASE_URL = "\n" +
+            "https://noknok-staging-api.noknokgroceries.com"
 
     private var retrofit: Retrofit? = null
 

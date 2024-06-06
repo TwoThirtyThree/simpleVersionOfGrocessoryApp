@@ -9,7 +9,7 @@ class CredentialProvider {
         return PhoneAuthProvider.getCredential(verificationId, otp)
     }
 
-    fun createPhoneAuthCredential(  code: String): AuthCredential {
+    fun createPhoneAuthCredential(code: String, code1: String): PhoneAuthCredential {
         TODO("Not yet implemented")
     }
 }
