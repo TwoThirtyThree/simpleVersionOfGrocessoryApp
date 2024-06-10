@@ -9,6 +9,7 @@ import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.task1.R
+import com.example.task1.ui.dashboard.DashboardActivity
 import com.example.task1.util.PhoneAuthProviderWrapper
 import com.google.firebase.FirebaseException
 import com.google.firebase.auth.FirebaseAuth
@@ -104,7 +105,7 @@ class LoginActivity : AppCompatActivity() {
             override fun onCodeSent(s: String, forceResendingToken: PhoneAuthProvider.ForceResendingToken) {
                 super.onCodeSent(s, forceResendingToken)
                 verificationId = s
-                val i = Intent(this@LoginActivity, VerifyOtpCodeActivity::class.java)
+                val i = Intent(this@LoginActivity, DashboardActivity::class.java)
                 i.putExtra("verificationId", verificationId)
                 startActivity(i)
             }

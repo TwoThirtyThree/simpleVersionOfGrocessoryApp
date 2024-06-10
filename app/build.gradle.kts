@@ -226,7 +226,7 @@ dependencies {
     implementation(libs.firebase.auth)
     implementation(libs.androidx.navigation.fragment.ktx)
     implementation(libs.androidx.navigation.ui.ktx)
-
+    implementation ("com.squareup.okhttp3:logging-interceptor:5.0.0-alpha.11")
     testImplementation("junit:junit:4.13.2")
     testImplementation("org.mockito:mockito-core:4.0.0")
     testImplementation("io.mockk:mockk:1.13.11")
