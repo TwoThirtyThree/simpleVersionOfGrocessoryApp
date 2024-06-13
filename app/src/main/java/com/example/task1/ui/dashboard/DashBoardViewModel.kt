@@ -7,7 +7,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.liveData
 import com.example.task1.data.models.Banner
-import com.example.task1.data.models.Product
+import com.example.task1.data.models.Items
 import com.example.task1.data.repostory.Repository
 import com.example.task1.data.repostory.RepositoryImpl
 import com.example.task1.data.retrofit.ApiService
@@ -29,16 +29,16 @@ class DashBoardViewModel(context: Context) : ViewModel() {
             emit(banners)
         } catch (e: Exception) {
             emit(emptyList<Banner>())
-            Log.e("DashBoardViewModel", "Error fetching banners: ${e.message}")
+            Log.e("DashBoardViewModel for banners", "Error fetching banners: ${e.message}")
         }
     }
 
-    fun fetchProducts(): LiveData<List<Product>> = liveData(Dispatchers.IO) {
+    fun fetchItems(): LiveData<List<Items>> = liveData(Dispatchers.IO) {
         try {
-            val products = repository.getProducts()
-            emit(products)
+            val items = repository.getItems()
+            emit(items)
         } catch (e: Exception) {
-            emit(emptyList<Product>())
+            emit(emptyList<Items>())
             Log.e("DashBoardViewModel", "Error fetching products: ${e.message}")
         }
     }

@@ -1,4 +1,4 @@
-package com.example.task1.MyDashBoard
+package com.example.task1.ui.login
 
 import android.app.Application
 import com.google.firebase.FirebaseApp

@@ -14,14 +14,14 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
 import com.example.task1.*
 import com.example.task1.ui.adapters.BannerAdapter
-import com.example.task1.ui.adapters.ProductAdapter
+import com.example.task1.ui.adapters.ItemsAdapter
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
-class DashboardActivity : AppCompatActivity(), ProductAdapter.OnCartClickListener {
+class DashboardActivity : AppCompatActivity(), ItemsAdapter.OnCartClickListener {
     private lateinit var viewPager: ViewPager2
     lateinit var dashboardViewModel: DashBoardViewModel
     private lateinit var tabLayout: TabLayout
@@ -37,7 +37,7 @@ class DashboardActivity : AppCompatActivity(), ProductAdapter.OnCartClickListene
         setContentView(R.layout.activity_dash_board_screen)
         initView()
         fetchBanners()
-        fetchProducts()
+        fetchItems()
     }
 
     private fun initView() {
@@ -60,21 +60,21 @@ class DashboardActivity : AppCompatActivity(), ProductAdapter.OnCartClickListene
         }
     }
 
-    private fun fetchProducts() {
+    private fun fetchItems() {
         GlobalScope.launch(Dispatchers.Main) {
-            val products = dashboardViewModel.fetchProducts()
+            val products = dashboardViewModel.fetchItems()
             products.observe(this@DashboardActivity) { productList ->
                 recyclerViewForProduct.layoutManager = GridLayoutManager(this@DashboardActivity, 2)
-                val adapter = ProductAdapter(productList, this@DashboardActivity)
+                val adapter = ItemsAdapter(productList, this@DashboardActivity)
                 recyclerViewForProduct.adapter = adapter
             }
         }
     }
 
     override fun CartClick(position: Int) {
-        val product = (recyclerViewForProduct.adapter as ProductAdapter).productList[position]
-        if (product.quantity > 0) {
-            product.quantity -= 1
+        val product = (recyclerViewForProduct.adapter as ItemsAdapter).productList[position]
+        if (product.maxQty > 0) {
+            product.maxQty -= 1
             totalQuantityInCart++
             updateProductListUI(position)
 
@@ -86,9 +86,9 @@ class DashboardActivity : AppCompatActivity(), ProductAdapter.OnCartClickListene
     }
 
     override fun QuantityIncrease(position: Int) {
-        val product = (recyclerViewForProduct.adapter as ProductAdapter).productList[position]
-        if (product.quantity > 0) {
-            product.quantity -= 1
+        val product = (recyclerViewForProduct.adapter as ItemsAdapter).productList[position]
+        if (product.maxQty > 0) {
+            product.maxQty -= 1
             totalQuantityInCart++
             updateProductListUI(position)
 
@@ -112,7 +112,7 @@ class DashboardActivity : AppCompatActivity(), ProductAdapter.OnCartClickListene
 
     private fun updateProductListUI(position: Int) {
 
-        (recyclerViewForProduct.adapter as ProductAdapter).notifyItemChanged(position)
+        (recyclerViewForProduct.adapter as ItemsAdapter).notifyItemChanged(position)
     }
 
     private fun updateCartIcon() {

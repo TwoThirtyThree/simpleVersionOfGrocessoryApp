@@ -11,12 +11,12 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.task1.R
-import com.example.task1.data.models.Product
-import com.example.task1.ui.products.ProductDetailActivity
+import com.example.task1.data.models.Items
+import com.example.task1.ui.items.ItemsDetailActivity
 
 
-class ProductAdapter(val productList: List<Product>, val listener: OnCartClickListener) :
-    RecyclerView.Adapter<ProductAdapter.ProductViewHolder>() {
+class ItemsAdapter(val productList: List<Items>, val listener: OnCartClickListener) :
+    RecyclerView.Adapter<ItemsAdapter.ProductViewHolder>() {
 
     var totalQuantityInCart: Int = 0 // Default value is 0
 
@@ -47,10 +47,10 @@ class ProductAdapter(val productList: List<Product>, val listener: OnCartClickLi
         private val myLinearLayout: LinearLayout = itemView.findViewById(R.id.hide_and_visible_layout)
 
 
-        fun bind(product: Product) {
-            productName.text = product.name
+        fun bind(product: Items) {
+            productName.text = product.brandName
             productDescription.text = product.description
-            totalQuantityInTextView.text = product.quantity.toString()
+            totalQuantityInTextView.text = product.maxQty.toString()
             productPrice.text =
                 "$${product.price}" // Assuming price is in dollars, modify as needed
             discountBadge.text = "${product.discount}% OFF"
@@ -74,12 +74,12 @@ class ProductAdapter(val productList: List<Product>, val listener: OnCartClickLi
             }
             productImage.setOnClickListener {
                 val context = itemView.context
-                val intent = Intent(context, ProductDetailActivity::class.java).apply {
-                    putExtra("name", product.name)
+                val intent = Intent(context, ItemsDetailActivity::class.java).apply {
+                    putExtra("name", product.brandName)
                     putExtra("description", product.description)
                     putExtra("price", "$${product.price}")
                     putExtra("imageUrl", product.imageUrl)
-                    putExtra("quantity", product.quantity)
+                    putExtra("quantity", product.maxQty)
                     putExtra("discount", product.discount)
                 }
                 context.startActivity(intent)
@@ -94,7 +94,7 @@ class ProductAdapter(val productList: List<Product>, val listener: OnCartClickLi
             }
 
             // If quantity becomes zero, show "Out of stock" and disable buttons
-            if (product.quantity == 0) {
+            if (product.maxQty == 0) {
                 addToCartButton.text = "Out of stock"
                 plusButton.isEnabled = false
                 minusButton.isEnabled = false
@@ -105,7 +105,7 @@ class ProductAdapter(val productList: List<Product>, val listener: OnCartClickLi
             }
 
             // Disable minus button if quantity is 1 or less
-            minusButton.isEnabled = product.quantity > 0
+            minusButton.isEnabled = product.maxQty > 0
         }
 
 

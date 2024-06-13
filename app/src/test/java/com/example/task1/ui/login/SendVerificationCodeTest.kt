@@ -1,15 +1,13 @@
-import com.example.task1.MyDashBoard.TestApplication
-import com.example.task1.ui.login.LoginActivity
+package com.example.task1.ui.login
+
 import com.example.task1.util.PhoneAuthProviderWrapper
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.PhoneAuthOptions
 import com.google.firebase.auth.PhoneAuthProvider
 import com.google.i18n.phonenumbers.PhoneNumberUtil
 import com.google.i18n.phonenumbers.Phonenumber
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.mockito.ArgumentCaptor
 import org.mockito.Mockito.times
 import org.mockito.Mockito.verify
 import org.mockito.kotlin.any
@@ -31,15 +29,13 @@ class SendVerificationCodeTest {
 
     @Before
     fun setUp() {
-        // Properly initialize the activity using Robolectric
+        // initialize the activity using Robolectric
         loginActivity = Robolectric.buildActivity(LoginActivity::class.java).create().start().resume().get()
-
         // Initialize the mocks
         mockFirebaseAuth = mock()
         mockPhoneNumberUtil = mock()
         mockCallbacks = mock()
         mockPhoneAuthProviderWrapper = mock()
-
         // Inject the mocks into the activity
         loginActivity.phoneAuthProviderWrapper = mockPhoneAuthProviderWrapper
     }
@@ -56,7 +52,6 @@ class SendVerificationCodeTest {
         val phoneNumber = "+919876543210" // Valid Indian number
         setUpPhoneNumberUtil(phoneNumber, true)
         loginActivity.sendVerificationCode(phoneNumber)
-
         verify(mockPhoneAuthProviderWrapper, times(1)).verifyPhoneNumber(any())
     }
 
@@ -65,25 +60,22 @@ class SendVerificationCodeTest {
         val phoneNumber = "+91987654321" // Invalid Indian number
         setUpPhoneNumberUtil(phoneNumber, false)
         loginActivity.sendVerificationCode(phoneNumber)
-
         verify(mockPhoneAuthProviderWrapper, times(1)).verifyPhoneNumber(any())
     }
 
     @Test
     fun testSendVerificationCode_ValidPakistaniNumber() {
-        val phoneNumber = "+923001234567" // Valid Pakistani number
+        val phoneNumber = "+923001234567" // Valid Pakistan number
         setUpPhoneNumberUtil(phoneNumber, true)
         loginActivity.sendVerificationCode(phoneNumber)
-
         verify(mockPhoneAuthProviderWrapper, times(1)).verifyPhoneNumber(any())
     }
 
     @Test
     fun testSendVerificationCode_InvalidPakistaniNumber() {
-        val phoneNumber = "+92300123456" // Invalid Pakistani number
+        val phoneNumber = "+92300123456" // Invalid Pakistan number
         setUpPhoneNumberUtil(phoneNumber, false)
         loginActivity.sendVerificationCode(phoneNumber)
-
         verify(mockPhoneAuthProviderWrapper, times(1)).verifyPhoneNumber(any())
     }
 
@@ -92,7 +84,6 @@ class SendVerificationCodeTest {
         val phoneNumber = "+447912345678" // Valid UK number
         setUpPhoneNumberUtil(phoneNumber, true)
         loginActivity.sendVerificationCode(phoneNumber)
-
         verify(mockPhoneAuthProviderWrapper, times(1)).verifyPhoneNumber(any())
     }
 
@@ -101,7 +92,6 @@ class SendVerificationCodeTest {
         val phoneNumber = "+44791234567" // Invalid UK number
         setUpPhoneNumberUtil(phoneNumber, false)
         loginActivity.sendVerificationCode(phoneNumber)
-
         verify(mockPhoneAuthProviderWrapper, times(1)).verifyPhoneNumber(any())
     }
 }

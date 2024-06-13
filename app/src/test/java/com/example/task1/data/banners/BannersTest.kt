@@ -1,4 +1,4 @@
-package com.example.task1
+package com.example.task1.data.banners
 
 import android.content.Context
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
@@ -38,6 +38,7 @@ class BannersTest {
     private lateinit var viewModel: DashBoardViewModel
 
     private val testDispatcher = UnconfinedTestDispatcher()
+
     private val testScope = TestScope(testDispatcher)
 
     @Before
@@ -60,80 +61,56 @@ class BannersTest {
     }
 
     @Test
-
     fun fetchBannersFromAPI() = testScope.runTest {
-        // Given
         val bannerList = listOf(Banner(id = "1", imageUrl = "url1"), Banner(id = "2", imageUrl = "url2"))
         `when`(repository.getBanners()).thenReturn(bannerList)
-
         // Observe LiveData
         val liveData = viewModel.fetchBanners()
         liveData.observeForever(observer)
-
-        // When
+        // Ensure all coroutines and tasks are completed
         advanceUntilIdle()
-
-        // Then
         verify(observer).onChanged(bannerList)
         verify(repository).getBanners()
     }
 
     @Test
-
     fun fetchBannersFromAPIError() = testScope.runTest {
-        // Given
         `when`(repository.getBanners()).thenThrow(RuntimeException("Network Error"))
-
         // Observe LiveData
         val liveData = viewModel.fetchBanners()
         val observer = mock<Observer<List<Banner>>>()
         liveData.observeForever(observer)
-
-        // When
+        // Ensure all coroutines and tasks are completed
         advanceUntilIdle()
-
-        // Then
-       // verify(observer).onChanged(emptyList())
+        verify(observer).onChanged(emptyList())
         verify(repository).getBanners()
     }
 
 
     @Test
-
     fun fetchBannersFromLocalAssets() = testScope.runTest {
-        // Given
         val bannerList = listOf(Banner(id = "1", imageUrl = "url1"), Banner(id = "2", imageUrl = "url2"))
         `when`(repository.getBanners()).thenReturn(bannerList)
-
         // Observe LiveData
         val liveData = viewModel.fetchBanners()
         liveData.observeForever(observer)
-
-        // When
         repository.useApiData = false
+        // Ensure all coroutines and tasks are completed
         advanceUntilIdle()
-
-        // Then
         verify(observer).onChanged(bannerList)
         verify(repository).getBanners()
     }
 
     @Test
-
     fun fetchBannersFromLocalAssetsError() = testScope.runTest {
-        // Given
         `when`(repository.getBanners()).thenThrow(RuntimeException("Error reading local assets"))
-
         // Observe LiveData
         val liveData = viewModel.fetchBanners()
         liveData.observeForever(observer)
-
-        // When
         repository.useApiData = false
+        // Ensure all coroutines and tasks are completed
         advanceUntilIdle()
-
-        // Then
-      // verify(observer).onChanged(emptyList())
+        verify(observer).onChanged(emptyList())
         verify(repository).getBanners()
     }
 }
