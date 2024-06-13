@@ -1,4 +1,4 @@
-package com.example.task1
+package com.example.task1.ui.login
 
 import com.google.i18n.phonenumbers.NumberParseException
 import com.google.i18n.phonenumbers.PhoneNumberUtil
@@ -17,7 +17,7 @@ class PhoneNumberTest {
         phoneNumberUtil = PhoneNumberUtil.getInstance()
     }
 
-    // Valid Indian phone number
+    // Valid Indian Phone Number
     @Test
     fun testValidIndianPhoneNumber() {
         val phoneNumber = "+919876543210"
@@ -26,21 +26,21 @@ class PhoneNumberTest {
         assertEquals("+919876543210", formattedNumber)
     }
 
-    // Invalid Indian phone numbers
+    // Invalid Indian Phone Numbers Short
     @Test
     fun testInvalidIndianPhoneNumberShort() {
         val phoneNumber = "+91987654321" // 9 digits instead of 10
         val formattedNumber = formatPhoneNumber(phoneNumber)
         assertNull(formattedNumber)
     }
-
+    // Invalid Indian Phone Numbers Long
     @Test
     fun testInvalidIndianPhoneNumberLong() {
         val phoneNumber = "+9198765432100"
         val formattedNumber = formatPhoneNumber(phoneNumber)
         assertNull(formattedNumber)
     }
-
+    // Invalid Indian Phone Numbers Non Numeric
     @Test
     fun testInvalidIndianPhoneNumberNonNumeric() {
         val phoneNumber = "+91abcdefghij"
@@ -48,38 +48,38 @@ class PhoneNumberTest {
         assertNull(formattedNumber)
     }
 
-    // Valid Pakistani phone number
+    // Valid Pakistan Phone Number
     @Test
-    fun testValidPakistaniPhoneNumber() {
+    fun testValidPakistanPhoneNumber() {
         val phoneNumber = "+923001234567"
         val formattedNumber = formatPhoneNumber(phoneNumber)
         assertNotNull(formattedNumber)
         assertEquals("+923001234567", formattedNumber)
     }
 
-    // Invalid Pakistani phone numbers
+    // Invalid Pakistan Phone Numbers Short
     @Test
-    fun testInvalidPakistaniPhoneNumberShort() {
+    fun testInvalidPakistanPhoneNumberShort() {
         val phoneNumber = "+92300123456" // 9 digits instead of 10
         val formattedNumber = formatPhoneNumber(phoneNumber)
         assertNull(formattedNumber)
     }
-
+    // Invalid Pakistan Phone Numbers Long
     @Test
-    fun testInvalidPakistaniPhoneNumberLong() {
+    fun testInvalidPakistanPhoneNumberLong() {
         val phoneNumber = "+9230012345678" // 11 digits instead of 10
         val formattedNumber = formatPhoneNumber(phoneNumber)
         assertNull(formattedNumber)
     }
-
+    // Invalid Pakistan Phone Numbers Non Numeric
     @Test
-    fun testInvalidPakistaniPhoneNumberNonNumeric() {
+    fun testInvalidPakistanPhoneNumberNonNumeric() {
         val phoneNumber = "+92abcdefghij"
         val formattedNumber = formatPhoneNumber(phoneNumber)
         assertNull(formattedNumber)
     }
 
-    // Valid UK phone number
+    // Valid UK Phone Number
     @Test
     fun testValidUKPhoneNumber() {
         val phoneNumber = "+447911123456"
@@ -88,21 +88,21 @@ class PhoneNumberTest {
         assertEquals("+447911123456", formattedNumber)
     }
 
-    // Invalid UK phone numbers
+    // Invalid UK Phone Numbers Short
     @Test
     fun testInvalidUKPhoneNumberShort() {
         val phoneNumber = "+44791112345" // 9 digits instead of 10
         val formattedNumber = formatPhoneNumber(phoneNumber)
         assertNull(formattedNumber)
     }
-
+    // Invalid UK Phone Numbers Long
     @Test
     fun testInvalidUKPhoneNumberLong() {
         val phoneNumber = "+4479111234567" // 11 digits instead of 10
         val formattedNumber = formatPhoneNumber(phoneNumber)
         assertNull(formattedNumber)
     }
-
+    // Invalid UK Phone Numbers Non Numeric
     @Test
     fun testInvalidUKPhoneNumberNonNumeric() {
         val phoneNumber = "+44abcdefghij"
@@ -110,7 +110,7 @@ class PhoneNumberTest {
         assertNull(formattedNumber)
     }
 
-    // Valid Dubai phone number
+    // Valid Dubai Phone Number
     @Test
     fun testValidDubaiPhoneNumber() {
         val phoneNumber = "+971501234567"
@@ -119,21 +119,21 @@ class PhoneNumberTest {
         assertEquals("+971501234567", formattedNumber)
     }
 
-    // Invalid Dubai phone numbers
+    // Invalid Dubai Phone Numbers Short
     @Test
     fun testInvalidDubaiPhoneNumberShort() {
         val phoneNumber = "+97150123456" // 8 digits instead of 9
         val formattedNumber = formatPhoneNumber(phoneNumber)
         assertNull(formattedNumber)
     }
-
+    // Invalid Dubai Phone Numbers Long
     @Test
     fun testInvalidDubaiPhoneNumberLong() {
         val phoneNumber = "+9715012345678" // 10 digits instead of 9
         val formattedNumber = formatPhoneNumber(phoneNumber)
         assertNull(formattedNumber)
     }
-
+    // Invalid Dubai Phone Numbers Non Numeric
     @Test
     fun testInvalidDubaiPhoneNumberNonNumeric() {
         val phoneNumber = "+971abcdefghi"

@@ -27,8 +27,9 @@
          "outOfStock":false,
          "price":425.0,
          "weight":1.0,
-         "quantity":10,
-         "discount":3
+         "maxQty":10,
+         "discount":8
+
       },
       {
          "id":"113",
@@ -38,7 +39,7 @@
          "weight":1.0,
          "outOfStock":false,
          "price":39990.0,
-         "quantity":0,
+         "maxQty":0,
          "discount":5
       },
       {
@@ -49,7 +50,7 @@
          "weight":1.0,
          "outOfStock":false,
          "price":1290.0,
-         "quantity":20,
+         "maxQty":20,
          "discount":5
       },
       {
@@ -60,7 +61,7 @@
          "weight":1.0,
          "outOfStock":false,
          "price":9290.0,
-         "quantity":25,
+         "maxQty":25,
          "discount":0
 
       }

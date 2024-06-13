@@ -21,7 +21,7 @@ class VerifyOtpCodeActivity : AppCompatActivity() {
     lateinit var verifyOtpButton: Button
     var firebaseAuth: FirebaseAuth? = null
    var verifiyOtp: String? = null
-    var credentialProvider: CredentialProvider = CredentialProvider() // Injected for testing
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -40,10 +40,6 @@ class VerifyOtpCodeActivity : AppCompatActivity() {
 
     fun intentRecieverOtp() {
          verifiyOtp = intent.getStringExtra("verificationId")
-
-
-
-
     }
 
     fun verifyCodelistener() {
@@ -88,7 +84,5 @@ class VerifyOtpCodeActivity : AppCompatActivity() {
                 }
         }
 
-        fun createPhoneAuthCredential(verificationId: String, otp: String): PhoneAuthCredential {
-            return PhoneAuthProvider.getCredential(verificationId, otp)
-        }
+
     }

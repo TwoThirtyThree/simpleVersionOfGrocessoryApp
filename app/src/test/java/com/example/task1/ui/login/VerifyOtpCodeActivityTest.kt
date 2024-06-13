@@ -1,9 +1,7 @@
 package com.example.task1.ui.login
 
-import android.content.Intent
 import android.widget.Button
 import android.widget.EditText
-import com.example.task1.MyDashBoard.TestApplication
 import com.example.task1.R
 import com.example.task1.ui.dashboard.DashboardActivity
 import com.google.android.gms.tasks.OnCompleteListener
@@ -12,7 +10,6 @@ import com.google.firebase.auth.AuthCredential
 import com.google.firebase.auth.AuthResult
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
-import com.google.firebase.auth.PhoneAuthProvider
 import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Test
@@ -26,18 +23,13 @@ import org.robolectric.annotation.Config
 import org.robolectric.shadows.ShadowToast
 
 @RunWith(RobolectricTestRunner::class)
-@Config(sdk = [28], application = TestApplication::class) // Use appropriate SDK version
+@Config(sdk = [28], application = TestApplication::class)
 class VerifyOtpCodeActivityTest {
 
     @Mock
     private lateinit var mockFirebaseAuth: FirebaseAuth
-
     @Mock
     private lateinit var mockTask: Task<AuthResult>
-
-    @Captor
-    private lateinit var credentialCaptor: ArgumentCaptor<AuthCredential>
-
     private lateinit var verifyOtpCodeActivity: VerifyOtpCodeActivity
 
     @Before
@@ -49,14 +41,10 @@ class VerifyOtpCodeActivityTest {
 
     @Test
     fun testValidOtpVerification() {
-        // Setup the activity with a mock verification ID
+
         verifyOtpCodeActivity.verifiyOtp = "testVerificationId"
-
-        // Set up the views
         val editTextOtp = verifyOtpCodeActivity.findViewById<EditText>(R.id.edittext_otp_verify)
-         val verifyOtpButton = verifyOtpCodeActivity.findViewById<Button>(R.id.button_otp_login)
-
-        // Set the test input
+        val verifyOtpButton = verifyOtpCodeActivity.findViewById<Button>(R.id.button_otp_login)
         editTextOtp.setText("123456")
 
         // Mock the signInWithCredential method
@@ -69,7 +57,7 @@ class VerifyOtpCodeActivityTest {
         // Simulate a successful sign-in task
         `when`(mockTask.isSuccessful).thenReturn(true)
 
-//        // Simulate the verify button click
+       // Simulate the verify button click
         verifyOtpButton.performClick()
 
         // Verify that signInWithCredential was called
@@ -84,16 +72,10 @@ class VerifyOtpCodeActivityTest {
 
     @Test
     fun testInvalidOtpVerification() {
-        // Setup the activity with a mock verification ID
         verifyOtpCodeActivity.verifiyOtp = "testVerificationId"
-
-        // Set up the views
         val editTextOtp = verifyOtpCodeActivity.findViewById<EditText>(R.id.edittext_otp_verify)
         val verifyOtpButton = verifyOtpCodeActivity.findViewById<Button>(R.id.button_otp_login)
-
-        // Set the test input
         editTextOtp.setText("invalidOtp")
-
         // Mock the signInWithCredential method
         `when`(mockFirebaseAuth.signInWithCredential(any(AuthCredential::class.java))).thenReturn(mockTask)
         `when`(mockTask.addOnCompleteListener(any())).thenAnswer {
@@ -105,9 +87,7 @@ class VerifyOtpCodeActivityTest {
         `when`(mockTask.isSuccessful).thenReturn(false)
         `when`(mockTask.exception).thenReturn(FirebaseAuthInvalidCredentialsException("ERROR", "Invalid OTP"))
 
-        // Simulate the verify button click
         verifyOtpButton.performClick()
-
         // Verify that signInWithCredential was called
         verify(mockFirebaseAuth).signInWithCredential(any(AuthCredential::class.java))
 
