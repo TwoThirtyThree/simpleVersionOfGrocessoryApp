@@ -1,106 +1,138 @@
-// RepositoryImpl.kt
-package com.example.task1.data.repostory
+package com.example.task1.data.repository
+
+
+import ApiService
 
 import android.content.Context
-import android.util.Log
+import android.net.http.HttpException
+import android.os.Build
+
+import androidx.annotation.RequiresExtension
 import com.example.task1.data.models.Banner
-import com.example.task1.data.models.BannerListResponse
 import com.example.task1.data.models.Items
-import com.example.task1.data.models.ItemListResponse
-import com.example.task1.data.retrofit.ApiService
+import com.example.task1.data.models.Results
+import com.example.task1.data.models.ServicesListResponse
+import com.example.task1.data.repostory.Repository
 import com.google.gson.Gson
-import retrofit2.HttpException
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.RequestBody
+import okhttp3.RequestBody.Companion.toRequestBody
 import java.io.IOException
+
+
 
 class RepositoryImpl(private val apiService: ApiService, private val context: Context) : Repository {
     override var useApiData: Boolean = true
 
-    override suspend fun getBanners(): List<Banner> {
-        return if (useApiData) {
-            try {
-                val response = apiService.getServices()
-                response.banners
-            } catch (e: IOException) {
-                Log.e("RepositoryImpl for banners", "Network error: ${e.message}")
-                emptyList()
-            } catch (e: HttpException) {
-                Log.e("RepositoryImpl  for banners", "HTTP error: ${e.message}")
-                emptyList()
-            } catch (e: Exception) {
-                Log.e("RepositoryImpl  for banners", "Error: ${e.message}")
-                emptyList()
-            }
-        } else {
-            getLocalBanners()
+    // Fetch services, banners, and items from the API
+    @RequiresExtension(extension = Build.VERSION_CODES.S, version = 7)
+    override suspend fun getServices(body: RequestBody): Results<ServicesListResponse> {
+        return try {
+            val response = apiService.getServices(body)
+            Results.Success(response)
+        } catch (e: IOException) {
+            Results.Failure("Network Error", "Unable to fetch services due to network issues.")
+        } catch (e: HttpException) {
+            Results.Failure("HTTP Error", "Failed to fetch services. Please try again later.")
+        } catch (e: Exception) {
+            Results.Failure("General Error", "An unexpected error occurred.")
         }
     }
 
-    override suspend fun getItems(): List<Items> {
+    // Fetch banners, can use either API or local data
+    @RequiresExtension(extension = Build.VERSION_CODES.S, version = 7)
+    override suspend fun getBanners(): Results<List<Banner>> {
         return if (useApiData) {
             try {
-                val response = apiService.getServices()
-                Log.d("RepositoryImpl for items", "Fetched items: ${response.items}")
-
-                if (response.items.isNullOrEmpty()) {
-                    Log.e("RepositoryImpl  for items", "No items received from the API.")
-                }
-           response.items
+                val response = apiService.getServices(createRequestBody())
+                Results.Success(response.banners)
             } catch (e: IOException) {
-                Log.e("RepositoryImpl for items", "Network error: ${e.message}")
-                emptyList()
+                Results.Failure("Network Error", "Unable to fetch banners due to network issues.")
             } catch (e: HttpException) {
-                Log.e("RepositoryImpl for items", "HTTP error: ${e.message}")
-                emptyList()
+                Results.Failure("HTTP Error", "Failed to fetch banners. Please try again later.")
             } catch (e: Exception) {
-                Log.e("RepositoryImpl for items", "Error in: ${e.message}")
-                emptyList()
+                Results.Failure("General Error", "An unexpected error occurred.")
             }
         } else {
-          getLocalItems()
+            // Fetch local data
+            val localData = getLocalData()
+            localData?.banners?.let {
+                Results.Success(it)
+            } ?: Results.Failure("Data Error", "Failed to fetch banners from local data.")
         }
     }
 
-
-    private fun getLocalBanners(): List<Banner> {
-        val json = getJsonDataFromAsset("home.json", context)
-        val bannersResponse = Gson().fromJson(json, BannerListResponse::class.java)
-        return bannersResponse.banners
+    // Fetch items, can use either API or local data
+    @RequiresExtension(extension = Build.VERSION_CODES.S, version = 7)
+    override suspend fun getItems(): Results<List<Items>> {
+        return if (useApiData) {
+            try {
+                val response = apiService.getServices(createRequestBody())
+                Results.Success(response.items)
+            } catch (e: IOException) {
+                Results.Failure("Network Error", "Unable to fetch items due to network issues.")
+            } catch (e: HttpException) {
+                Results.Failure("HTTP Error", "Failed to fetch items. Please try again later.")
+            } catch (e: Exception) {
+                Results.Failure("General Error", "An unexpected error occurred.")
+            }
+        } else {
+            // Fetch local data
+            val localData = getLocalData()
+            localData?.items?.let {
+                Results.Success(it)
+            } ?: Results.Failure("Data Error", "Failed to fetch items from local data.")
+        }
     }
 
-    private fun getLocalItems(): List<Items> {
-        val json = getJsonDataFromAsset("home.json", context)
-        val itemsResponse = Gson().fromJson(json, ItemListResponse::class.java)
-        return itemsResponse.products
+    // Create the request body from a predefined JSON string
+    private fun createRequestBody(): RequestBody {
+        val jsonBody = """
+            {
+                "locality": {
+                    "coordinates": {
+                        "lat": 33.8868890356106,
+                        "lon": 35.5191703140736
+                    }
+                },
+                "isLazy": false,
+                "locale": "",
+                "appIdentifier": "f368bb3bf8323985",
+                "appName": "noknok",
+                "country": "Pakistan",
+                "operationUid": "eee"
+            }
+        """.trimIndent()
+
+        return jsonBody.toRequestBody("application/json".toMediaTypeOrNull())
     }
 
+    // Read local data from the assets folder
+    private fun getLocalData(): ServicesListResponse? {
+        val json = getJsonDataFromAsset("home.json", context)
+        return if (json.isNotEmpty()) {
+            Gson().fromJson(json, ServicesListResponse::class.java)
+        } else {
+            null
+        }
+    }
+
+    // Helper function to read JSON data from assets
     private fun getJsonDataFromAsset(fileName: String, context: Context): String {
         return try {
-            Log.d("RepositoryImpl", "Attempting to read asset: $fileName from context: ${context.packageName}")
-
             val assetManager = context.assets
-            val fileList = assetManager.list("")
-            Log.d("RepositoryImpl", "Files in assets: ${fileList?.joinToString()}")
-
-            if (fileList != null && fileName !in fileList) {
-                Log.e("RepositoryImpl", "File $fileName not found in assets directory.")
-                return ""
-            }
-
             val inputStream = assetManager.open(fileName)
-            Log.d("RepositoryImpl", "Asset opened successfully")
-
             val size = inputStream.available()
-            Log.d("RepositoryImpl", "Asset size: $size bytes")
-
             val buffer = ByteArray(size)
             inputStream.read(buffer)
-            Log.d("RepositoryImpl", "Asset read successfully into buffer")
-
             inputStream.close()
             String(buffer, Charsets.UTF_8)
         } catch (e: IOException) {
-            Log.e("RepositoryImpl", "Error reading asset: ${e.message}")
             ""
         }
     }
 }
+
+
+
+

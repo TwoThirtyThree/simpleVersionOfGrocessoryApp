@@ -42,7 +42,7 @@ class VerifyOtpCodeActivityTest {
     @Test
     fun testValidOtpVerification() {
 
-        verifyOtpCodeActivity.verifiyOtp = "testVerificationId"
+        verifyOtpCodeActivity.verificationId = "testVerificationId"
         val editTextOtp = verifyOtpCodeActivity.findViewById<EditText>(R.id.edittext_otp_verify)
         val verifyOtpButton = verifyOtpCodeActivity.findViewById<Button>(R.id.button_otp_login)
         editTextOtp.setText("123456")
@@ -72,7 +72,7 @@ class VerifyOtpCodeActivityTest {
 
     @Test
     fun testInvalidOtpVerification() {
-        verifyOtpCodeActivity.verifiyOtp = "testVerificationId"
+        verifyOtpCodeActivity.verificationId = "testVerificationId"
         val editTextOtp = verifyOtpCodeActivity.findViewById<EditText>(R.id.edittext_otp_verify)
         val verifyOtpButton = verifyOtpCodeActivity.findViewById<Button>(R.id.button_otp_login)
         editTextOtp.setText("invalidOtp")

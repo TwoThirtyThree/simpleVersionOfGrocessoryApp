@@ -9,6 +9,7 @@ import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.task1.R
+import com.example.task1.ui.dashboard.DashboardActivity
 import com.example.task1.util.PhoneAuthProviderWrapper
 import com.google.firebase.FirebaseException
 import com.google.firebase.auth.FirebaseAuth
@@ -34,12 +35,12 @@ class LoginActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
 
-        inItViews()
+        initViews()
         otpClickListener()
 
     }
 
-    private fun inItViews() {
+    private fun initViews() {
         phoneAuthProviderWrapper = PhoneAuthProviderWrapper() // Initialize the wrapper
         firebaseAuth = FirebaseAuth.getInstance()
         editTextPhoneNumber = findViewById(R.id.edittext_phone_number)
@@ -50,7 +51,9 @@ class LoginActivity : AppCompatActivity() {
 
 
     private fun otpClickListener() {
-
+        val i = Intent(this@LoginActivity, DashboardActivity::class.java)
+//        i.putExtra("verificationId", verificationId)
+        startActivity(i)
         otpButton.setOnClickListener {
             val countryCode = editTextCountryCode.text.toString().trim()
             val phoneNumber = editTextPhoneNumber.text.toString().trim()
@@ -107,7 +110,7 @@ class LoginActivity : AppCompatActivity() {
             override fun onCodeSent(s: String, forceResendingToken: PhoneAuthProvider.ForceResendingToken) {
                 super.onCodeSent(s, forceResendingToken)
                 verificationId = s
-                val i = Intent(this@LoginActivity, VerifyOtpCodeActivity::class.java)
+                val i = Intent(this@LoginActivity, DashboardActivity::class.java)
                 i.putExtra("verificationId", verificationId)
                 startActivity(i)
             }

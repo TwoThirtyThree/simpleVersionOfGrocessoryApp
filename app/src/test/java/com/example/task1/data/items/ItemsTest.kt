@@ -5,7 +5,7 @@ import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.Observer
 import com.example.task1.data.models.Items
 import com.example.task1.data.repostory.Repository
-import com.example.task1.ui.dashboard.DashBoardViewModel
+import com.example.task1.ui.dashboard.DashboardViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.TestScope
@@ -40,7 +40,7 @@ class ItemsTest {
     @Mock
     private lateinit var context: Context
 
-    private lateinit var viewModel: DashBoardViewModel
+    private lateinit var viewModel: DashboardViewModel
 
     private val testDispatcher = UnconfinedTestDispatcher()
 
@@ -54,7 +54,7 @@ class ItemsTest {
         Mockito.`when`(context.applicationContext).thenReturn(context)
 
         // Initialize the ViewModel
-        viewModel = DashBoardViewModel(context)
+        viewModel = DashboardViewModel(context)
 
         // Set the mock repository
         viewModel.updateRepository(repository)
@@ -114,7 +114,7 @@ class ItemsTest {
                 discount = 0
             )
         )
-        Mockito.`when`(repository.getItems()).thenReturn(productList)
+        Mockito.`when`(repository.getItems(headers, requestBody)).thenReturn(productList)
 
         // Observe LiveData
         val liveData = viewModel.fetchItems()
@@ -122,14 +122,14 @@ class ItemsTest {
         // Ensure all coroutines and tasks are completed
         advanceUntilIdle()
         Mockito.verify(observer).onChanged(productList)
-        Mockito.verify(repository).getItems()
+        Mockito.verify(repository).getItems(headers, requestBody)
     }
 
 
     @Test
 
     fun fetchProductsFromAPIError() = testScope.runTest {
-        Mockito.`when`(repository.getItems()).thenThrow(RuntimeException("Network Error"))
+        Mockito.`when`(repository.getItems(headers, requestBody)).thenThrow(RuntimeException("Network Error"))
         // Observe LiveData
         val liveData = viewModel.fetchItems()
         val observer = mock<Observer<List<Items>>>()
@@ -137,7 +137,7 @@ class ItemsTest {
         // Ensure all coroutines and tasks are completed
         advanceUntilIdle()
         verify(observer).onChanged((emptyList()))
-        Mockito.verify(repository).getItems()
+        Mockito.verify(repository).getItems(headers, requestBody)
     }
 
 
@@ -191,7 +191,7 @@ class ItemsTest {
             )
         )
 
-        Mockito.`when`(repository.getItems()).thenReturn(productList)
+        Mockito.`when`(repository.getItems(headers, requestBody)).thenReturn(productList)
         // Observe LiveData
         val liveData = viewModel.fetchItems()
         liveData.observeForever(observer)
@@ -199,13 +199,13 @@ class ItemsTest {
         // Ensure all coroutines and tasks are completed
         advanceUntilIdle()
         Mockito.verify(observer).onChanged(productList)
-        Mockito.verify(repository).getItems()
+        Mockito.verify(repository).getItems(headers, requestBody)
     }
 
     @Test
 
     fun fetchProductsFromLocalAssetsError() = testScope.runTest {
-        Mockito.`when`(repository.getItems()).thenThrow(RuntimeException("Error reading local assets"))
+        Mockito.`when`(repository.getItems(headers, requestBody)).thenThrow(RuntimeException("Error reading local assets"))
         // Observe LiveData
         val liveData = viewModel.fetchItems()
         liveData.observeForever(observer)
@@ -213,7 +213,7 @@ class ItemsTest {
         // Ensure all coroutines and tasks are completed
         advanceUntilIdle()
         verify(observer).onChanged(emptyList())
-        Mockito.verify(repository).getItems()
+        Mockito.verify(repository).getItems(headers, requestBody)
     }
 }
 

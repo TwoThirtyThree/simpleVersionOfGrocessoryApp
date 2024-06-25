@@ -13,21 +13,19 @@ import com.example.task1.R
 import com.example.task1.ui.dashboard.DashboardActivity
 import com.google.firebase.auth.AuthCredential
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.PhoneAuthCredential
 import com.google.firebase.auth.PhoneAuthProvider
 
 class VerifyOtpCodeActivity : AppCompatActivity() {
     lateinit var editTextOtp: EditText
     lateinit var verifyOtpButton: Button
     var firebaseAuth: FirebaseAuth? = null
-   var verifiyOtp: String? = null
+   var verificationId: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContentView(R.layout.activity_verify_otp_code)
         initViews()
-        intentRecieverOtp()
         verifyCodelistener()
     }
 
@@ -36,11 +34,10 @@ class VerifyOtpCodeActivity : AppCompatActivity() {
         firebaseAuth = FirebaseAuth.getInstance()
         editTextOtp = findViewById(R.id.edittext_otp_verify)
         verifyOtpButton = findViewById(R.id.button_otp_login)
+        verificationId = intent.getStringExtra("verificationId")
     }
 
-    fun intentRecieverOtp() {
-         verifiyOtp = intent.getStringExtra("verificationId")
-    }
+
 
     fun verifyCodelistener() {
         verifyOtpButton.setOnClickListener(View.OnClickListener {
@@ -56,9 +53,9 @@ class VerifyOtpCodeActivity : AppCompatActivity() {
     }
 
         fun verifyCode(code: String) {
-            val credential = PhoneAuthProvider.getCredential(verifiyOtp!!, code)
+            val credential = verificationId?.let { PhoneAuthProvider.getCredential(it, code) }
 
-            signInWithCredential(credential)
+            credential?.let { signInWithCredential(it) }
         }
 
         fun signInWithCredential(credential: AuthCredential) {
