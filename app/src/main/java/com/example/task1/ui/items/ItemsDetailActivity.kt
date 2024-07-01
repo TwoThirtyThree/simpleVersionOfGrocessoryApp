@@ -11,7 +11,7 @@ import com.bumptech.glide.Glide
 import com.example.task1.R
 import com.example.task1.data.models.Items
 
-class ItemsDetailActivity() : AppCompatActivity() {
+class ItemsDetailActivity: AppCompatActivity() {
     private lateinit var detailsProductNameTextView : TextView
     private lateinit var detailsProductDescriptionTextView : TextView
     private lateinit var detailsProductPriceTextView : TextView

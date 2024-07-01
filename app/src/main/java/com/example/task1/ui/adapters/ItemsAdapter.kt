@@ -6,10 +6,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.task1.R
 import com.example.task1.data.models.Items
 
-class ItemsAdapter(val productList: List<Items>, val listener: OnCartClickListener) :
+class ItemsAdapter(val productList: List<Items>, private val listener: OnCartClickListener) :
     RecyclerView.Adapter<ProductViewHolder>() {
 
-    var totalQuantityInCart: Int = 0 // Default value is 0
+
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ProductViewHolder {
         val view = LayoutInflater.from(parent.context)

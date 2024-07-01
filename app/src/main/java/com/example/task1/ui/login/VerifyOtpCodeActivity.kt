@@ -16,10 +16,10 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.PhoneAuthProvider
 
 class VerifyOtpCodeActivity : AppCompatActivity() {
-    lateinit var editTextOtp: EditText
-    lateinit var verifyOtpButton: Button
-    var firebaseAuth: FirebaseAuth? = null
-   var verificationId: String? = null
+    private lateinit var editTextOtp: EditText
+    private lateinit var verifyOtpButton: Button
+    private var firebaseAuth: FirebaseAuth? = null
+   private var verificationId: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -39,7 +39,7 @@ class VerifyOtpCodeActivity : AppCompatActivity() {
 
 
 
-    fun verifyCodelistener() {
+    private fun verifyCodelistener() {
         verifyOtpButton.setOnClickListener(View.OnClickListener {
 
             if (TextUtils.isEmpty(editTextOtp.getText().toString())) {
@@ -52,16 +52,16 @@ class VerifyOtpCodeActivity : AppCompatActivity() {
         })
     }
 
-        fun verifyCode(code: String) {
+        private fun verifyCode(code: String) {
             val credential = verificationId?.let { PhoneAuthProvider.getCredential(it, code) }
 
             credential?.let { signInWithCredential(it) }
         }
 
-        fun signInWithCredential(credential: AuthCredential) {
+        private fun signInWithCredential(credential: AuthCredential) {
 
-            firebaseAuth!!.signInWithCredential(credential)
-                .addOnCompleteListener { task ->
+            firebaseAuth?.signInWithCredential(credential)
+                ?.addOnCompleteListener { task ->
                     if (task.isSuccessful) {
 
                         val i = Intent(
@@ -74,7 +74,7 @@ class VerifyOtpCodeActivity : AppCompatActivity() {
 
                         Toast.makeText(
                             this@VerifyOtpCodeActivity,
-                            task.exception!!.message,
+                            task.exception?.message,
                             Toast.LENGTH_LONG
                         ).show()
                     }

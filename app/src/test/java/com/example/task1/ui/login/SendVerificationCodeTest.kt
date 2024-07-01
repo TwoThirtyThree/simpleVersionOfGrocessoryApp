@@ -48,7 +48,7 @@ class SendVerificationCodeTest {
     }
 
     @Test
-    fun testSendVerificationCode_ValidIndianNumber() {
+    fun testSendVerificationCodeValidIndianNumber() {
         val phoneNumber = "+919876543210" // Valid Indian number
         setUpPhoneNumberUtil(phoneNumber, true)
         loginActivity.sendVerificationCode(phoneNumber)
@@ -56,7 +56,7 @@ class SendVerificationCodeTest {
     }
 
     @Test
-    fun testSendVerificationCode_InvalidIndianNumber() {
+    fun testSendVerificationCodeInvalidIndianNumber() {
         val phoneNumber = "+91987654321" // Invalid Indian number
         setUpPhoneNumberUtil(phoneNumber, false)
         loginActivity.sendVerificationCode(phoneNumber)
@@ -64,7 +64,7 @@ class SendVerificationCodeTest {
     }
 
     @Test
-    fun testSendVerificationCode_ValidPakistaniNumber() {
+    fun testSendVerificationCodeValidPakistaniNumber() {
         val phoneNumber = "+923001234567" // Valid Pakistan number
         setUpPhoneNumberUtil(phoneNumber, true)
         loginActivity.sendVerificationCode(phoneNumber)
@@ -72,7 +72,7 @@ class SendVerificationCodeTest {
     }
 
     @Test
-    fun testSendVerificationCode_InvalidPakistaniNumber() {
+    fun testSendVerificationCodeInvalidPakistaniNumber() {
         val phoneNumber = "+92300123456" // Invalid Pakistan number
         setUpPhoneNumberUtil(phoneNumber, false)
         loginActivity.sendVerificationCode(phoneNumber)
@@ -80,7 +80,7 @@ class SendVerificationCodeTest {
     }
 
     @Test
-    fun testSendVerificationCode_ValidUKNumber() {
+    fun testSendVerificationCodeValidUKNumber() {
         val phoneNumber = "+447912345678" // Valid UK number
         setUpPhoneNumberUtil(phoneNumber, true)
         loginActivity.sendVerificationCode(phoneNumber)
@@ -88,7 +88,7 @@ class SendVerificationCodeTest {
     }
 
     @Test
-    fun testSendVerificationCode_InvalidUKNumber() {
+    fun testSendVerificationCodeInvalidUKNumber() {
         val phoneNumber = "+44791234567" // Invalid UK number
         setUpPhoneNumberUtil(phoneNumber, false)
         loginActivity.sendVerificationCode(phoneNumber)

@@ -13,7 +13,7 @@ import com.example.task1.R
 import com.example.task1.data.models.Items
 import com.example.task1.ui.items.ItemsDetailActivity
 
-class ProductViewHolder(itemView: View, val listener: ItemsAdapter.OnCartClickListener) : RecyclerView.ViewHolder(itemView) {
+class ProductViewHolder(itemView: View, private val listener: ItemsAdapter.OnCartClickListener) : RecyclerView.ViewHolder(itemView) {
 
     private val productName: TextView = itemView.findViewById(R.id.product_name_textView)
     private val productDescription: TextView = itemView.findViewById(R.id.product_description_textView)
@@ -71,7 +71,8 @@ class ProductViewHolder(itemView: View, val listener: ItemsAdapter.OnCartClickLi
         }
 
         // Handle stock availability
-        if (product.maxQty == 0) {
+        if (product.outOfStock || product.maxQty==0) {
+
             addToCartButton.text = "Out of stock"
             plusButton.isEnabled = false
             minusButton.isEnabled = false

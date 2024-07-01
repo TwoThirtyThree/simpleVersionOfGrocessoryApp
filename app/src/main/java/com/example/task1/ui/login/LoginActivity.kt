@@ -34,7 +34,6 @@ class LoginActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
-
         initViews()
         otpClickListener()
 
@@ -51,9 +50,7 @@ class LoginActivity : AppCompatActivity() {
 
 
     private fun otpClickListener() {
-        val i = Intent(this@LoginActivity, DashboardActivity::class.java)
-//        i.putExtra("verificationId", verificationId)
-        startActivity(i)
+
         otpButton.setOnClickListener {
             val countryCode = editTextCountryCode.text.toString().trim()
             val phoneNumber = editTextPhoneNumber.text.toString().trim()
@@ -110,7 +107,7 @@ class LoginActivity : AppCompatActivity() {
             override fun onCodeSent(s: String, forceResendingToken: PhoneAuthProvider.ForceResendingToken) {
                 super.onCodeSent(s, forceResendingToken)
                 verificationId = s
-                val i = Intent(this@LoginActivity, DashboardActivity::class.java)
+                val i = Intent(this@LoginActivity, VerifyOtpCodeActivity::class.java)
                 i.putExtra("verificationId", verificationId)
                 startActivity(i)
             }

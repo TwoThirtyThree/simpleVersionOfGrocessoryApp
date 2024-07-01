@@ -28,7 +28,7 @@ class BannerAdapter(private val bannerList: List<Banner>) :
     }
 
     inner class BannerViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        private val imageViewsBanners: ImageView = itemView.findViewById(R.id.banner_image_view)
+        private val imageviewBanners: ImageView = itemView.findViewById(R.id.banner_image_view)
 
         fun bind(banner: Banner) {
 
@@ -36,7 +36,7 @@ class BannerAdapter(private val bannerList: List<Banner>) :
                 .load(banner.imageUrl)
                 .placeholder(R.drawable.rounded_10k_24) // Placeholder image while loading
                 .error(androidx.core.R.drawable.ic_call_decline) // Image to show if loading fails
-                .into(imageViewsBanners)
+                .into(imageviewBanners)
 
         }
     }

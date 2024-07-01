@@ -202,6 +202,8 @@ android {
 }
 
 dependencies {
+    // Mockito and Mockito-Kotlin for Kotlin-specific extensions
+    testImplementation ("org.mockito.kotlin:mockito-kotlin:4.0.0")
     implementation("com.googlecode.libphonenumber:libphonenumber:8.13.37")
     implementation(libs.core.ktx)
     implementation(libs.androidx.junit.ktx)

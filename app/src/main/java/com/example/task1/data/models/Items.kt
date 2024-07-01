@@ -28,7 +28,7 @@ data class Items
      val group: String,
      val itemType: String,
      val weight: Double,
-     val outOfStock: Boolean,
+     var outOfStock: Boolean,
      var qtyPerUnit: Int,
      val sortOrder: Int,
      var maxQty: Int,
