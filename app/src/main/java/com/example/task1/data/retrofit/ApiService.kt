@@ -5,7 +5,7 @@ import retrofit2.http.POST
 
 interface ApiService {
     @POST("api/market/app/services")
-    suspend fun getServices(
+    suspend fun fetchAllData(
         @HeaderMap headers: Map<String, String>,
         @Body requestBody: Any
     ): ServicesListResponse

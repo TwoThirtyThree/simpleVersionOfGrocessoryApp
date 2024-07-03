@@ -1,12 +1,9 @@
-import com.example.task1.data.models.Banner
-import com.example.task1.data.models.Items
 import com.example.task1.data.models.Results
-
+import com.example.task1.data.models.ServicesListResponse
 
 
 interface Repository {
     var useApiData: Boolean
 
-    suspend fun getBanners(headers: Map<String, String>, requestBody: Any): Results<List<Banner>>
-    suspend fun getItems(headers: Map<String, String>, requestBody: Any): Results<List<Items>>
+    suspend fun fetchAllData(headers: Map<String, String>, requestBody: Any): Results<ServicesListResponse>
 }
