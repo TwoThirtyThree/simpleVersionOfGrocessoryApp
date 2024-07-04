@@ -12,7 +12,7 @@ import com.bumptech.glide.Glide
 import com.example.task1.R
 import com.example.task1.data.models.Items
 import com.example.task1.ui.items.ItemsDetailActivity
-import com.example.task1.utils.StockHandler
+import com.example.task1.ui.dashboard.StockHandler
 
 class ProductViewHolder(itemView: View, private val listener: ItemsAdapter.OnCartClickListener) :
     RecyclerView.ViewHolder(itemView) {

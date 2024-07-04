@@ -14,6 +14,7 @@ class DashboardViewModel(context: Context) : ViewModel() {
 
     private fun getHeaders(): Map<String, String> {
         return mapOf(
+
             "Authorization" to "eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJhcHBsaWNhdGlvbiIsInVpZCI6IkNzcDZUTDk0Ui02cHFmbnZvQVk4RXciLCJ1c2VySWQiOiI2NTU3MGZiMDljZWYyYjZlOTVhNzRiNzgiLCJyb2xlcyI6WyJVU0VSIl0sImFwaVR5cGUiOiJBUFAiLCJ0YWdzIjpbIk1BUktFVF9BUFBfVVNFUiJdLCJpYXQiOjE3MDUzMjQ4NjksInRlbmFudCI6IlhMbjJXSXhkV3gwREJ0IiwidmVyc2lvbiI6Nn0.iUG0lSxkm1I6uU9uzBzKDHE9kJ63_vVYjaXQJvqylghwBd_SSBPhMNiHEGL27_2Y",
             "Content-Type" to "application/json"
         )
@@ -21,6 +22,8 @@ class DashboardViewModel(context: Context) : ViewModel() {
 
     private fun getRequestBody(): Map<String, Any> {
         return mapOf(
+            return mapOf(
+
             "locality" to mapOf(
                 "coordinates" to mapOf(
                     "lat" to 33.8868890356106,
@@ -33,6 +36,7 @@ class DashboardViewModel(context: Context) : ViewModel() {
             "appName" to "noknok",
             "country" to "Pakistan",
             "operationUid" to "eee"
+        ),
         )
     }
 

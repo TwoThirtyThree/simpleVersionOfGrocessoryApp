@@ -1,11 +1,12 @@
+// File: DashboardActivity.kt
 package com.example.task1.ui.dashboard
+
 import DashboardViewModel
-import android.annotation.SuppressLint
 import android.os.Bundle
 import android.util.Log
 import android.widget.ImageView
 import android.widget.TextView
-import android.widget.Toast
+
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
@@ -19,21 +20,22 @@ import com.example.task1.data.models.Items
 import com.example.task1.data.models.Results
 import com.example.task1.ui.adapters.BannerAdapter
 import com.example.task1.ui.adapters.ItemsAdapter
+import com.example.task1.utils.CartManager
+
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import kotlinx.coroutines.launch
 
+class DashboardActivity : AppCompatActivity() {
 
-class DashboardActivity : AppCompatActivity(), ItemsAdapter.OnCartClickListener {
     private lateinit var viewPager: ViewPager2
     private lateinit var dashboardViewModel: DashboardViewModel
     private lateinit var tabLayout: TabLayout
     private lateinit var recyclerviewForProduct: RecyclerView
     private lateinit var cartIcon: ImageView
     private lateinit var cartQuantityTextView: TextView
-    private var totalQuantityInCart: Int = 0
+    private lateinit var cartManager: CartManager
 
-    @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_dash_board_screen)
@@ -44,7 +46,7 @@ class DashboardActivity : AppCompatActivity(), ItemsAdapter.OnCartClickListener 
 
     private fun initView() {
         val factory = DashboardViewModelFactory(application)
-        dashboardViewModel = ViewModelProvider(this,factory).get(DashboardViewModel::class.java)
+        dashboardViewModel = ViewModelProvider(this, factory).get(DashboardViewModel::class.java)
 
         viewPager = findViewById(R.id.view_pager)
         tabLayout = findViewById(R.id.tab_layout)
@@ -57,18 +59,18 @@ class DashboardActivity : AppCompatActivity(), ItemsAdapter.OnCartClickListener 
         lifecycleScope.launch {
             dashboardViewModel.fetchAllData()
                 .observe(this@DashboardActivity) { result ->
-                when (result) {
-                    is Results.Success -> {
-                        val data = result.data
-                        setupBanners(data.banners)
-                        setupItems(data.items)
-                    }
-                    is Results.Failure -> {
-                        showPopup(result.message, result.title)
-                        Log.e("DashboardActivity", "Error fetching data: ${result.message}")
+                    when (result) {
+                        is Results.Success -> {
+                            val data = result.data
+                            setupBanners(data.banners)
+                            setupItems(data.items)
+                        }
+                        is Results.Failure -> {
+                            showPopup(result.message, result.title)
+                            Log.e("DashboardActivity", "Error fetching data: ${result.message}")
+                        }
                     }
                 }
-            }
         }
     }
 
@@ -79,7 +81,23 @@ class DashboardActivity : AppCompatActivity(), ItemsAdapter.OnCartClickListener 
 
     private fun setupItems(items: List<Items>) {
         recyclerviewForProduct.layoutManager = GridLayoutManager(this, 2)
-        recyclerviewForProduct.adapter = ItemsAdapter(items, this)
+        val itemsAdapter = ItemsAdapter(items, object : ItemsAdapter.OnCartClickListener {
+            override fun cartClick(position: Int) {
+                cartManager.onCartClick(position)
+            }
+
+            override fun quantityIncrease(position: Int) {
+                cartManager.onQuantityIncrease(position)
+            }
+
+            override fun quantityDecrease(position: Int) {
+                cartManager.onQuantityDecrease(position)
+            }
+        })
+        recyclerviewForProduct.adapter = itemsAdapter
+
+        // Initialize CartManager with the adapter
+        cartManager = CartManager(this, itemsAdapter, cartQuantityTextView)
     }
 
     private fun showPopup(title: String, message: String) {
@@ -96,44 +114,5 @@ class DashboardActivity : AppCompatActivity(), ItemsAdapter.OnCartClickListener 
             .setView(dialogView)
             .setPositiveButton("OK") { dialog, _ -> dialog.dismiss() }
             .show()
-    }
-
-    override fun cartClick(position: Int) {
-        val product = (recyclerviewForProduct.adapter as ItemsAdapter).productList[position]
-        if (product.maxQty > 0) {
-            product.maxQty -= 1
-            totalQuantityInCart++
-            updateProductListUI(position)
-            updateCartIcon()
-        } else {
-            Toast.makeText(this, "Product is out of stock", Toast.LENGTH_SHORT).show()
-        }
-    }
-
-    override fun quantityIncrease(position: Int) {
-        val product = (recyclerviewForProduct.adapter as ItemsAdapter).productList[position]
-        if (product.maxQty > 0) {
-            product.maxQty -= 1
-            totalQuantityInCart++
-            updateProductListUI(position)
-            updateCartIcon()
-        } else {
-            Toast.makeText(this, "No more stock available", Toast.LENGTH_SHORT).show()
-        }
-    }
-
-    override fun quantityDecrease(position: Int) {
-        if (totalQuantityInCart > 0) {
-            totalQuantityInCart--
-            updateCartIcon()
-        }
-    }
-
-    private fun updateCartIcon() {
-        cartQuantityTextView.text = totalQuantityInCart.toString()
-    }
-
-    private fun updateProductListUI(position: Int) {
-        recyclerviewForProduct.adapter?.notifyItemChanged(position)
     }
 }

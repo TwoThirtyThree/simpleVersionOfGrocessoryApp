@@ -1,7 +1,8 @@
-package com.example.task1.utils
+package com.example.task1.ui.dashboard
 
 
 import android.widget.Button
+import android.widget.Toast
 
 import com.example.task1.data.models.Items
 
@@ -13,7 +14,8 @@ class StockHandler(
 
     fun handleStockStatus(product: Items) {
         if (product.outOfStock || product.maxQty == 0) {
-            addToCartButton.text = "Out of stock"
+
+           addToCartButton.text = "Out of stock"
             plusButton.isEnabled = false
             minusButton.isEnabled = false
         } else {
