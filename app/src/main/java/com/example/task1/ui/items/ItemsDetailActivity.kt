@@ -1,6 +1,7 @@
-package com.example.task1.ui.products
+package com.example.task1.ui.items
 
 import android.annotation.SuppressLint
+import android.content.Context
 import android.os.Bundle
 import android.widget.Button
 import android.widget.ImageView
@@ -8,8 +9,9 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
 import com.example.task1.R
+import com.example.task1.data.models.Items
 
-class ProductDetailActivity : AppCompatActivity() {
+class ItemsDetailActivity: AppCompatActivity() {
     private lateinit var detailsProductNameTextView : TextView
     private lateinit var detailsProductDescriptionTextView : TextView
     private lateinit var detailsProductPriceTextView : TextView

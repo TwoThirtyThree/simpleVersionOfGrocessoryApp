@@ -1,10 +1,9 @@
-// Repository.kt
-package com.example.task1.data.repostory
+import com.example.task1.data.models.Results
+import com.example.task1.data.models.ServicesListResponse
 
-import com.example.task1.data.models.Banner
-import com.example.task1.data.models.Product
 
 interface Repository {
-    suspend fun getBanners(): List<Banner>
-    suspend fun getProducts(): List<Product>
+    var useApiData: Boolean
+
+    suspend fun fetchAllData(headers: Map<String, String>, requestBody: Any): Results<ServicesListResponse>
 }

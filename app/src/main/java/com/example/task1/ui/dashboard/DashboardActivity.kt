@@ -1,122 +1,118 @@
-// DashBoardScreen.kt
+// File: DashboardActivity.kt
 package com.example.task1.ui.dashboard
 
-import android.annotation.SuppressLint
+import DashboardViewModel
 import android.os.Bundle
 import android.util.Log
 import android.widget.ImageView
 import android.widget.TextView
-import android.widget.Toast
+
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
-import com.example.task1.*
+import com.example.task1.R
+import com.example.task1.data.models.Banner
+import com.example.task1.data.models.Items
+import com.example.task1.data.models.Results
 import com.example.task1.ui.adapters.BannerAdapter
-import com.example.task1.ui.adapters.ProductAdapter
+import com.example.task1.ui.adapters.ItemsAdapter
+import com.example.task1.utils.CartManager
+
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
-class DashboardActivity : AppCompatActivity(), ProductAdapter.OnCartClickListener {
+class DashboardActivity : AppCompatActivity() {
+
     private lateinit var viewPager: ViewPager2
-    private lateinit var dashboardViewModel: DashBoardViewModel
+    private lateinit var dashboardViewModel: DashboardViewModel
     private lateinit var tabLayout: TabLayout
-    private lateinit var recyclerViewForProduct: RecyclerView
+    private lateinit var recyclerviewForProduct: RecyclerView
     private lateinit var cartIcon: ImageView
     private lateinit var cartQuantityTextView: TextView
-    private var totalQuantityInCart: Int = 0
+    private lateinit var cartManager: CartManager
 
-
-    @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_dash_board_screen)
+
         initView()
-        fetchBanners()
-        fetchProducts()
+        fetchAllData()
     }
 
     private fun initView() {
-        dashboardViewModel = ViewModelProvider(this, DashboardViewModelFactory(application = application)).get(
-            DashBoardViewModel::class.java)
+        val factory = DashboardViewModelFactory(application)
+        dashboardViewModel = ViewModelProvider(this, factory).get(DashboardViewModel::class.java)
+
         viewPager = findViewById(R.id.view_pager)
         tabLayout = findViewById(R.id.tab_layout)
-        recyclerViewForProduct = findViewById(R.id.recylicview_for_product)
+        recyclerviewForProduct = findViewById(R.id.recylicview_for_product)
         cartIcon = findViewById(R.id.cart_icon)
         cartQuantityTextView = findViewById(R.id.cart_quantity_textView)
     }
 
-    private fun fetchBanners() {
-        GlobalScope.launch(Dispatchers.Main) {
-            val banners = dashboardViewModel.fetchBanners()
-            banners.observe(this@DashboardActivity) { bannerList ->
-                viewPager.adapter = BannerAdapter(bannerList)
-                TabLayoutMediator(tabLayout, viewPager) { _, _ -> }.attach()
+    private fun fetchAllData() {
+        lifecycleScope.launch {
+            dashboardViewModel.fetchAllData()
+                .observe(this@DashboardActivity) { result ->
+                    when (result) {
+                        is Results.Success -> {
+                            val data = result.data
+                            setupBanners(data.banners)
+                            setupItems(data.items)
+                        }
+                        is Results.Failure -> {
+                            showPopup(result.message, result.title)
+                            Log.e("DashboardActivity", "Error fetching data: ${result.message}")
+                        }
+                    }
+                }
+        }
+    }
+
+    private fun setupBanners(banners: List<Banner>) {
+        viewPager.adapter = BannerAdapter(banners)
+        TabLayoutMediator(tabLayout, viewPager) { _, _ -> }.attach()
+    }
+
+    private fun setupItems(items: List<Items>) {
+        recyclerviewForProduct.layoutManager = GridLayoutManager(this, 2)
+        val itemsAdapter = ItemsAdapter(items, object : ItemsAdapter.OnCartClickListener {
+            override fun cartClick(position: Int) {
+                cartManager.onCartClick(position)
             }
-        }
-    }
 
-    private fun fetchProducts() {
-        GlobalScope.launch(Dispatchers.Main) {
-            val products = dashboardViewModel.fetchProducts()
-            products.observe(this@DashboardActivity) { productList ->
-                recyclerViewForProduct.layoutManager = GridLayoutManager(this@DashboardActivity, 2)
-                val adapter = ProductAdapter(productList, this@DashboardActivity)
-                recyclerViewForProduct.adapter = adapter
+            override fun quantityIncrease(position: Int) {
+                cartManager.onQuantityIncrease(position)
             }
-        }
+
+            override fun quantityDecrease(position: Int) {
+                cartManager.onQuantityDecrease(position)
+            }
+        })
+        recyclerviewForProduct.adapter = itemsAdapter
+
+        // Initialize CartManager with the adapter
+        cartManager = CartManager(this, itemsAdapter, cartQuantityTextView)
     }
 
-    override fun CartClick(position: Int) {
-        val product = (recyclerViewForProduct.adapter as ProductAdapter).productList[position]
-        if (product.quantity > 0) {
-            product.quantity -= 1
-            totalQuantityInCart++
-            updateProductListUI(position)
+    private fun showPopup(title: String, message: String) {
+        val inflater = layoutInflater
+        val dialogView = inflater.inflate(R.layout.custom_alert_dialog, null)
 
+        val dialogTitle = dialogView.findViewById<TextView>(R.id.dialog_title)
+        val dialogMessage = dialogView.findViewById<TextView>(R.id.dialog_message)
 
-            updateCartIcon()
-        } else {
-            Toast.makeText(this, "Product is out of stock", Toast.LENGTH_SHORT).show()
-        }
-    }
+        dialogTitle.text = title
+        dialogMessage.text = message
 
-    override fun QuantityIncrease(position: Int) {
-        val product = (recyclerViewForProduct.adapter as ProductAdapter).productList[position]
-        if (product.quantity > 0) {
-            product.quantity -= 1
-            totalQuantityInCart++
-            updateProductListUI(position)
-
-
-            updateCartIcon()
-        } else {
-            Toast.makeText(this, "No more stock available", Toast.LENGTH_SHORT).show()
-        }
-    }
-
-    override fun QuantityDecrease(position: Int) {
-        if (totalQuantityInCart > 0) {
-            totalQuantityInCart--
-            updateCartIcon()
-
-            updateProductListUI(position)
-        } else {
-            Toast.makeText(this, "Cannot decrease quantity further", Toast.LENGTH_SHORT).show()
-        }
-    }
-
-    private fun updateProductListUI(position: Int) {
-
-        (recyclerViewForProduct.adapter as ProductAdapter).notifyItemChanged(position)
-    }
-
-    private fun updateCartIcon() {
-        cartQuantityTextView.text = totalQuantityInCart.toString()
-        Log.d("icon", "Total quantity in cart: $totalQuantityInCart")
+        AlertDialog.Builder(this)
+            .setView(dialogView)
+            .setPositiveButton("OK") { dialog, _ -> dialog.dismiss() }
+            .show()
     }
 }
